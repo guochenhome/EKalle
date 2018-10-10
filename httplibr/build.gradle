@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$support"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    /**
+     * 此框架暴露引用
+     */
+    compile 'com.yanzhenjie:kalle:0.1.4'
+    /**
+     * okhttp工厂  因为配置在httplibr 进行，所有不对外暴露
+     */
+    implementation 'com.yanzhenjie:okalle:0.1.4'
+    /**
+     * 暂不暴露此引用，如果主项目引用则暴露
+     */
+    implementation 'com.alibaba:fastjson:1.1.70.android'
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+}
