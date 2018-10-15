@@ -19,11 +19,15 @@ public class HttpEntity implements Parcelable {
     @JSONField(name = "data")
     private String mData;
     /**
-     * perse: 1 - -> 成功
+     * perse: 1 成功
      * 其他失败
      */
     @JSONField(name = "status")
     private String mStatus;
+    /**
+     * 成功失败tag
+     */
+    private boolean succeed=true;
 
 
     public HttpEntity() {
@@ -35,6 +39,7 @@ public class HttpEntity implements Parcelable {
         mMessage = in.readString();
         mData = in.readString();
         mStatus = in.readString();
+        succeed = in.readByte() != 0;
     }
 
     @Override
@@ -42,6 +47,7 @@ public class HttpEntity implements Parcelable {
         dest.writeString(mMessage);
         dest.writeString(mData);
         dest.writeString(mStatus);
+        dest.writeByte((byte) (succeed ? 1 : 0));
     }
 
     @Override
@@ -83,5 +89,13 @@ public class HttpEntity implements Parcelable {
 
     public void setmStatus(String mStatus) {
         this.mStatus = mStatus;
+    }
+
+    public boolean isSucceed() {
+        return succeed;
+    }
+
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
     }
 }
