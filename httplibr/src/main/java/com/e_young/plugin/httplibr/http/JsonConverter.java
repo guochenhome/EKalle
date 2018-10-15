@@ -37,11 +37,12 @@ public class JsonConverter implements Converter {
                 httpEntity = JSON.parseObject(serverJson, HttpEntity.class);
             } catch (Exception e) {
                 httpEntity = new HttpEntity();
-                httpEntity.setmSucceed(false);
                 httpEntity.setmMessage("服务器数据格式错误");
+                httpEntity.setmData("");
+                httpEntity.setmStatus("-1");//设置 -1 为数据格式错误
             }
 
-            if (httpEntity != null && httpEntity.ismSucceed() && httpEntity.getmData() != null) {
+            if (httpEntity != null && !httpEntity.getmStatus().equals("-1") && httpEntity.getmData() != null) {
                 try {
                     succeedData = new Gson().fromJson(httpEntity.getmData(),succeed);
                 } catch (Exception error) {

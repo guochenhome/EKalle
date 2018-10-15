@@ -8,46 +8,58 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 数据沙盒漏斗
  * 配合过滤器拦截的bean类
+ *
  * @author guochen
  * @see 2018.9.21
  */
 public class HttpEntity implements Parcelable {
 
-    @JSONField(name = "succeed")
-    private boolean mSucceed;
-
-    @JSONField(name="message")
+    @JSONField(name = "message")
     private String mMessage;
-
-    @JSONField(name="data")
+    @JSONField(name = "data")
     private String mData;
+    /**
+     * perse: 1 - -> 成功
+     * 其他失败
+     */
+    @JSONField(name = "status")
+    private String mStatus;
 
 
     public HttpEntity() {
 
     }
 
+
     protected HttpEntity(Parcel in) {
-        mSucceed = in.readByte() != 0;
         mMessage = in.readString();
         mData = in.readString();
+        mStatus = in.readString();
     }
-
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte((byte) (mSucceed ? 1 : 0));
         dest.writeString(mMessage);
         dest.writeString(mData);
+        dest.writeString(mStatus);
     }
 
-    public boolean ismSucceed() {
-        return mSucceed;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setmSucceed(boolean mSucceed) {
-        this.mSucceed = mSucceed;
-    }
+    public static final Creator<HttpEntity> CREATOR = new Creator<HttpEntity>() {
+        @Override
+        public HttpEntity createFromParcel(Parcel in) {
+            return new HttpEntity(in);
+        }
+
+        @Override
+        public HttpEntity[] newArray(int size) {
+            return new HttpEntity[size];
+        }
+    };
 
     public String getmMessage() {
         return mMessage;
@@ -65,20 +77,11 @@ public class HttpEntity implements Parcelable {
         this.mData = mData;
     }
 
-    public static final Creator<HttpEntity> CREATOR = new Creator<HttpEntity>() {
-        @Override
-        public HttpEntity createFromParcel(Parcel in) {
-            return new HttpEntity(in);
-        }
+    public String getmStatus() {
+        return mStatus;
+    }
 
-        @Override
-        public HttpEntity[] newArray(int size) {
-            return new HttpEntity[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setmStatus(String mStatus) {
+        this.mStatus = mStatus;
     }
 }
