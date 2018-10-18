@@ -39,10 +39,6 @@ dependencies {
      * okhttp工厂  因为配置在httplibr 进行，所有不对外暴露
      */
     implementation 'com.yanzhenjie:okalle:0.1.4'
-    /**
-     * 暂不暴露此引用，如果主项目引用则暴露
-     */
-    implementation 'com.alibaba:fastjson:1.1.70.android'
 
     implementation 'com.google.code.gson:gson:2.8.5'
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import com.yanzhenjie.kalle.Kalle
 import com.yanzhenjie.kalle.simple.SimpleCallback
 import com.yanzhenjie.kalle.simple.SimpleResponse
@@ -11,14 +12,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val URL_ROOT = "http://192.168.0.103:8188"
+    val URL_ROOT = "http://192.168.0.111:8188"
 
     var URL_CONTENT = "$URL_ROOT/rest/ysh/app"
 
     /**
      *注册/登录
      */
-    val LOGIN = "$URL_CONTENT/user/registAppUser"
+    val LOGIN = "$URL_CONTENT/homePage/banner"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,16 +38,12 @@ class MainActivity : AppCompatActivity() {
 
 
         Kalle.post(LOGIN)
-                .param("phone", "18910489401")
-                .param("verifyCode", "1234")
                 .tag(this)
-                .perform(object : SimpleCallback<LoginBean>() {
-                    override fun onResponse(response: SimpleResponse<LoginBean, String>?) {
+                .perform(object : SimpleCallback<BannerBean>() {
+                    override fun onResponse(response: SimpleResponse<BannerBean, String>?) {
 
-                        if (response!!.isSucceed) {
+                        Log.d("",response.toString())
 
-
-                        }
                     }
 
 
