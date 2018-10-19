@@ -31,7 +31,7 @@ public class HttpConfig {
     }
 
     public HttpConfig(Context context, Builder builder) {
-        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug,builder.tokey));
+        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug));
     }
 
     /**
@@ -58,7 +58,7 @@ public class HttpConfig {
      *             params.put("deviceId", JPushInterface.getUdid(context));
      *         }
      */
-    private KalleConfig getKallConfig(Context context, String loggerTag, boolean Debug,String tokey) {
+    private KalleConfig getKallConfig(Context context, String loggerTag, boolean Debug) {
 
         KalleConfig config = null;
 
@@ -102,10 +102,6 @@ public class HttpConfig {
          * debug 开关，若为设置，则默认 关闭
          */
         private boolean Debug = false;
-        /**
-         * 登录令牌
-         */
-        private String tokey="";
 
         public Builder(Context context) {
             this.context = context;
@@ -118,11 +114,6 @@ public class HttpConfig {
 
         public Builder isDebug(boolean debug) {
             this.Debug = debug;
-            return this;
-        }
-
-        public Builder setTokey(String tokey){
-            this.tokey=tokey;
             return this;
         }
 
