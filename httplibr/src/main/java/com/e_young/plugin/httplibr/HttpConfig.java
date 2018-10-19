@@ -76,7 +76,6 @@ public class HttpConfig {
                     .addHeader(HeadConsts.OSLANG,HeadConsts.OS_LANG_VEL)
                     .addHeader(HeadConsts.OSVERSION,SystemUtil.getSystemVersion())
                     .addHeader(HeadConsts.PHONEMODEL,SystemUtil.getSystemModel())
-                    .addHeader(HeadConsts.TOKEY,tokey)
                     .addHeader(HeadConsts.OSTYPE,OSUtil.getOsType(context))
                     .addHeader(HeadConsts.DEVICEID,"??")
                     .build();
