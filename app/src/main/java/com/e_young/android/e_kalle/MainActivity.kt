@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import com.e_young.plugin.httplibr.util.JsonBodyUtil
 import com.yanzhenjie.kalle.Kalle
 import com.yanzhenjie.kalle.simple.SimpleCallback
 import com.yanzhenjie.kalle.simple.SimpleResponse
@@ -27,22 +28,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Example of a call to a native method
-        sample_text.setOnClickListener{
-          login()
+        sample_text.setOnClickListener {
+            login()
         }
     }
 
 
     fun login() {
 
+        var param = mutableMapOf(
+                "id" to "1"
+        )
 
 
         Kalle.post(LOGIN)
+                .body(JsonBodyUtil.BuilderString(param))
                 .tag(this)
                 .perform(object : SimpleCallback<BannerBean>() {
                     override fun onResponse(response: SimpleResponse<BannerBean, String>?) {
 
-                        Log.d("",response.toString())
+                        Log.d("", response.toString())
 
                     }
 
