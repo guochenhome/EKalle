@@ -47,7 +47,7 @@ public class JsonConverter implements Converter {
                         failedData = (F) "服务器数据格式错误";
                     }
                 } else {
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                    failedData = (F) message;
                 }
 
             } catch (Exception e) {
