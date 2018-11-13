@@ -13,14 +13,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val URL_ROOT = "http://192.168.0.111:8188"
+    val URL_ROOT = "http://192.168.1.107:8181"
+
 
     var URL_CONTENT = "$URL_ROOT/rest/ysh/app"
 
     /**
-     *注册/登录
+     *
      */
-    val LOGIN = "$URL_CONTENT/homePage/banner"
+    val LOGIN = "$URL_CONTENT/user/authAppUser"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -31,7 +31,7 @@ public class HttpConfig {
     }
 
     public HttpConfig(Context context, Builder builder) {
-        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug));
+        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug,builder.DEVICEID));
     }
 
     /**
@@ -58,7 +58,7 @@ public class HttpConfig {
      *             params.put("deviceId", JPushInterface.getUdid(context));
      *         }
      */
-    private KalleConfig getKallConfig(Context context, String loggerTag, boolean Debug) {
+    private KalleConfig getKallConfig(Context context, String loggerTag, boolean Debug,String deviceid) {
 
         KalleConfig config = null;
 
@@ -77,7 +77,7 @@ public class HttpConfig {
                     .addHeader(HeadConsts.OSVERSION,SystemUtil.getSystemVersion())
                     .addHeader(HeadConsts.PHONEMODEL,SystemUtil.getSystemModel())
                     .addHeader(HeadConsts.OSTYPE,OSUtil.getOsType(context))
-                    .addHeader(HeadConsts.DEVICEID,"??")
+                    .addHeader(HeadConsts.DEVICEID,deviceid)
                     .build();
         } catch (Exception error) {
             config = KalleConfig.newBuilder().build();
@@ -103,6 +103,12 @@ public class HttpConfig {
          */
         private boolean Debug = false;
 
+        /**
+         * 极光识别的 udid
+         * @param context
+         */
+        private String DEVICEID="";
+
         public Builder(Context context) {
             this.context = context;
         }
@@ -114,6 +120,11 @@ public class HttpConfig {
 
         public Builder isDebug(boolean debug) {
             this.Debug = debug;
+            return this;
+        }
+
+        public Builder setDeviceid(String id) {
+            this.DEVICEID = id;
             return this;
         }
 

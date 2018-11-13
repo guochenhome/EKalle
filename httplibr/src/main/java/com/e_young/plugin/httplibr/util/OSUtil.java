@@ -1,9 +1,12 @@
 package com.e_young.plugin.httplibr.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -62,18 +65,17 @@ public class OSUtil {
         String model = deviceInfo.get("MODEL");
         return model.toLowerCase().contains("mi".toLowerCase()) ? model : (isNotBlank(brand) ? brand : "android");
     }
+
     /**
      * 返回deviceId
      */
-    public static String getDeviceId(){
-        if(SystemUtil.getSystemModel().toLowerCase().contains("mi".toLowerCase())){
-
-        }
-        return "";
+    public static String getDeviceId(Context context) {
+        return SystemUtil.getIMEI(context);
     }
 
     /**
      * 判断字符串
+     *
      * @param str
      * @return
      */
@@ -83,6 +85,7 @@ public class OSUtil {
 
     /**
      * 收集信息
+     *
      * @param application
      * @return
      */
