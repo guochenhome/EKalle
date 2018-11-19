@@ -31,34 +31,32 @@ public class HttpConfig {
     }
 
     public HttpConfig(Context context, Builder builder) {
-        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug,builder.DEVICEID));
+        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID,builder.lister));
     }
 
     /**
      * 初始化 kalleconfig 提供者
      *
-     * @return
-     *
-     *
-     * params.put(" appVersion ", AppUtil.getAppVersionName ( ManagerApplication.getApplication ()));
-     *         params.put("Content-Type", "application/json; charset=UTF-8");
-     *         params.put("os", "android");
-     *         params.put("osLang", "zh");
-     *         params.put("osVersion", android.os.Build.VERSION.RELEASE);
-     *         params.put("phoneModel", Build.MODEL);
-     *         params.put("token", StringUtil.isNotBlank(HeadItem.getInstance().getToken()) ? HeadItem.getInstance().getToken() : SpHelper.getToken());
-     *         Map<String, String> deviceInfo = getDeviceInfo();
-     *         String brand = deviceInfo.get("BRAND");
-     *         String model = deviceInfo.get("MODEL");
-     *         params.put("osType", model.toLowerCase().contains("mi".toLowerCase()) ? model : (StringUtil.isNotBlank(brand) ? brand : "android"));
-     *
-     *         if (android.os.Build.MODEL.toLowerCase().contains("mi".toLowerCase())) {//小米
-     *             params.put("deviceId", MyPreferences.getregid());
-     *         } else {
-     *             params.put("deviceId", JPushInterface.getUdid(context));
-     *         }
+     * @return params.put(" appVersion ", AppUtil.getAppVersionName ( ManagerApplication.getApplication ()));
+     * params.put("Content-Type", "application/json; charset=UTF-8");
+     * params.put("os", "android");
+     * params.put("osLang", "zh");
+     * params.put("osVersion", android.os.Build.VERSION.RELEASE);
+     * params.put("phoneModel", Build.MODEL);
+     * params.put("token", StringUtil.isNotBlank(HeadItem.getInstance().getToken()) ? HeadItem.getInstance().getToken() : SpHelper.getToken());
+     * Map<String, String> deviceInfo = getDeviceInfo();
+     * String brand = deviceInfo.get("BRAND");
+     * String model = deviceInfo.get("MODEL");
+     * params.put("osType", model.toLowerCase().contains("mi".toLowerCase()) ? model : (StringUtil.isNotBlank(brand) ? brand : "android"));
+     * <p>
+     * if (android.os.Build.MODEL.toLowerCase().contains("mi".toLowerCase())) {//小米
+     * params.put("deviceId", MyPreferences.getregid());
+     * } else {
+     * params.put("deviceId", JPushInterface.getUdid(context));
+     * }
      */
-    private KalleConfig getKallConfig(Context context, String loggerTag, boolean Debug,String deviceid) {
+    private KalleConfig getKallConfig(Context context, String loggerTag, boolean Debug, String deviceid
+            , JsonConverter.OnJsonConverterLister lister) {
 
         KalleConfig config = null;
 
@@ -69,15 +67,15 @@ public class HttpConfig {
                     .readTimeout(15, TimeUnit.SECONDS)
                     .network(new BroadcastNetwork(context))
                     .connectFactory(OkHttpConnectFactory.newBuilder().build())
-                    .converter(new JsonConverter(context))
-                    .addHeader(HeadConsts.APPVER,OSUtil.getAppVersionName(context))
-                    .addHeader(HeadConsts.CONTENT_TYPE,HeadConsts.CONTENT_TYPE_VEL)
-                    .addHeader(HeadConsts.OS,HeadConsts.OS_VEL)
-                    .addHeader(HeadConsts.OSLANG,HeadConsts.OS_LANG_VEL)
-                    .addHeader(HeadConsts.OSVERSION,SystemUtil.getSystemVersion())
-                    .addHeader(HeadConsts.PHONEMODEL,SystemUtil.getSystemModel())
-                    .addHeader(HeadConsts.OSTYPE,OSUtil.getOsType(context))
-                    .addHeader(HeadConsts.DEVICEID,deviceid)
+                    .converter(new JsonConverter(context, lister))
+                    .addHeader(HeadConsts.APPVER, OSUtil.getAppVersionName(context))
+                    .addHeader(HeadConsts.CONTENT_TYPE, HeadConsts.CONTENT_TYPE_VEL)
+                    .addHeader(HeadConsts.OS, HeadConsts.OS_VEL)
+                    .addHeader(HeadConsts.OSLANG, HeadConsts.OS_LANG_VEL)
+                    .addHeader(HeadConsts.OSVERSION, SystemUtil.getSystemVersion())
+                    .addHeader(HeadConsts.PHONEMODEL, SystemUtil.getSystemModel())
+                    .addHeader(HeadConsts.OSTYPE, OSUtil.getOsType(context))
+                    .addHeader(HeadConsts.DEVICEID, deviceid)
                     .build();
         } catch (Exception error) {
             config = KalleConfig.newBuilder().build();
@@ -105,9 +103,17 @@ public class HttpConfig {
 
         /**
          * 极光识别的 udid
+         *
          * @param context
          */
-        private String DEVICEID="";
+        private String DEVICEID = "";
+
+        /**
+         * 拦截器 jsonconverter
+         *
+         * @param context
+         */
+        private JsonConverter.OnJsonConverterLister lister;
 
         public Builder(Context context) {
             this.context = context;
@@ -125,6 +131,11 @@ public class HttpConfig {
 
         public Builder setDeviceid(String id) {
             this.DEVICEID = id;
+            return this;
+        }
+
+        public Builder setJsonConverter(JsonConverter.OnJsonConverterLister lister) {
+            this.lister = lister;
             return this;
         }
 

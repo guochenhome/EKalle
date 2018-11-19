@@ -21,8 +21,11 @@ import java.lang.reflect.Type;
 public class JsonConverter implements Converter {
     private Context context;
 
-    public JsonConverter(Context context) {
+    private OnJsonConverterLister lister;
+
+    public JsonConverter(Context context, OnJsonConverterLister lister) {
         this.context = context;
+        this.lister = lister;
     }
 
     @Override
@@ -40,7 +43,10 @@ public class JsonConverter implements Converter {
                 String status = jsonObject.get("status").getAsString();
                 String message = jsonObject.get("message").getAsString();
 
-                if (status != null && "1".equals(status)) {
+                //判断授权,如果授权失败直接忽略以下的操作
+                if (status != null && "-999".equals(status)) {
+                    lister.outLogin();
+                } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
                     } catch (Exception e) {
@@ -65,6 +71,12 @@ public class JsonConverter implements Converter {
                 .succeed(succeedData)
                 .failed(failedData)
                 .build();
+    }
+
+
+    public interface OnJsonConverterLister {
+
+        void outLogin();
     }
 
 
