@@ -1,6 +1,7 @@
 package com.e_young.plugin.httplibr.http;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -50,6 +51,7 @@ public class JsonConverter implements Converter {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
                     } catch (Exception e) {
+                        Log.e("erre",e.toString());
                         failedData = (F) "服务器数据格式错误";
                     }
                 } else {
