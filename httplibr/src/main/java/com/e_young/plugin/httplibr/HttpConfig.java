@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.e_young.plugin.httplibr.core.HeadConsts;
 import com.e_young.plugin.httplibr.http.JsonConverter;
+import com.e_young.plugin.httplibr.http.RedirectInterceptor;
 import com.e_young.plugin.httplibr.util.OSUtil;
 import com.e_young.plugin.httplibr.util.SystemUtil;
 import com.yanzhenjie.kalle.Kalle;
@@ -31,7 +32,7 @@ public class HttpConfig {
     }
 
     public HttpConfig(Context context, Builder builder) {
-        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister, builder.Token));
+        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister, builder.Token,builder.tokenLister));
     }
 
     /**
@@ -58,13 +59,15 @@ public class HttpConfig {
     private KalleConfig getKallConfig(Context context, String loggerTag
             , boolean Debug, String deviceid
             , JsonConverter.OnJsonConverterLister lister
-            , String token) {
+            , String token
+    , RedirectInterceptor.OnRedirectInterceLister tokenLister) {
 
         KalleConfig config = null;
 
         try {
             config = KalleConfig.newBuilder()
                     .addInterceptor(new LoggerInterceptor(loggerTag, Debug))
+                    .addInterceptor(new RedirectInterceptor(tokenLister))
                     .connectionTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(15, TimeUnit.SECONDS)
                     .network(new BroadcastNetwork(context))
@@ -118,6 +121,10 @@ public class HttpConfig {
          */
         private JsonConverter.OnJsonConverterLister lister;
         /**
+         * 拦截器 token
+         */
+        private RedirectInterceptor.OnRedirectInterceLister tokenLister;
+        /**
          * token
          */
         private String Token;
@@ -148,6 +155,11 @@ public class HttpConfig {
 
         public Builder setToken(String token) {
             this.Token = token;
+            return this;
+        }
+
+        public Builder setTokenLister(RedirectInterceptor.OnRedirectInterceLister tokenLister){
+            this.tokenLister=tokenLister;
             return this;
         }
 
