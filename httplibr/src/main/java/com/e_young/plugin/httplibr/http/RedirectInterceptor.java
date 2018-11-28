@@ -12,6 +12,9 @@ import com.yanzhenjie.kalle.connect.http.Chain;
 
 import java.io.IOException;
 
+/**
+ *  暂时作为token拦截器，，在每次请求  重定向 添加token
+ */
 public class RedirectInterceptor implements Interceptor {
 
     private OnRedirectInterceLister lister;

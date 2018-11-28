@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import com.e_young.plugin.httplibr.core.HeadConsts
 import com.e_young.plugin.httplibr.util.JsonBodyUtil
 import com.yanzhenjie.kalle.Kalle
 import com.yanzhenjie.kalle.simple.SimpleCallback
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     /**
      *
      */
-    val LOGIN = "$URL_CONTENT/user/authAppUser"
+    val LOGIN = "$URL_CONTENT/course/question"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,19 +42,27 @@ class MainActivity : AppCompatActivity() {
                 "id" to "1"
         )
 
-
-        Kalle.post(LOGIN)
-                .body(JsonBodyUtil.BuilderString(param))
-                .tag(this)
-                .perform(object : SimpleCallback<BannerBean>() {
-                    override fun onResponse(response: SimpleResponse<BannerBean, String>?) {
-
-                        Log.d("", response.toString())
-
+        Kalle.get(LOGIN).setHeader(HeadConsts.TOKEY, "35530bc3f00ccaaa97d8fc50d8f4d416")
+                .param("courseId", 2900036)
+                .perform(object : SimpleCallback<ExaminationBean>() {
+                    override fun onResponse(response: SimpleResponse<ExaminationBean, String>) {
+                       Log.d("tag","${response.succeed().data.size}+")
                     }
-
-
                 })
+
+
+//        Kalle.post(LOGIN)
+//                .body(JsonBodyUtil.BuilderString(param))
+//                .tag(this)
+//                .perform(object : SimpleCallback<BannerBean>() {
+//                    override fun onResponse(response: SimpleResponse<BannerBean, String>?) {
+//
+//                        Log.d("", response.toString())
+//
+//                    }
+//
+//
+//                })
 
 
     }

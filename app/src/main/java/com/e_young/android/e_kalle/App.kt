@@ -2,6 +2,7 @@ package com.e_young.android.e_kalle
 
 import android.app.Application
 import com.e_young.plugin.httplibr.HttpConfig
+import com.e_young.plugin.httplibr.http.RedirectInterceptor
 import com.e_young.plugin.httplibr.util.OSUtil
 
 class App : Application() {
@@ -16,6 +17,7 @@ class App : Application() {
                 .isDebug(BuildConfig.DEBUG)
                 .setLoggerTag("PluginLogg")
                 .setDeviceid(OSUtil.getDeviceId(this))
+                .setTokenLister { "111111111111111" }
                 .builder()
     }
 }
