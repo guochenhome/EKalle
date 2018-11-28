@@ -18,23 +18,19 @@ import java.io.IOException;
 
 public class RedirectInterceptor implements Interceptor {
 
-    private OnRedirectInterceLister lister;
 
-    public RedirectInterceptor(OnRedirectInterceLister lister) {
-        this.lister = lister;
+    public RedirectInterceptor() {
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Response response = chain.proceed(request);
-        if (request.headers().get(HeadConsts.TOKEY).isEmpty()) {
-            Log.d("Token", "Token 为空，准备拦截");
-
+        if (response.isRedirect()) {
             Url oldUrl = request.url();
             Url url = oldUrl.location(response.headers().getLocation());
             Headers headers = request.headers();
-            headers.set(HeadConsts.TOKEY, lister.OnGetToken());
+            headers.set(HeadConsts.TOKEY,"11111");
 
             RequestMethod method = request.method();
             Request newRequest;

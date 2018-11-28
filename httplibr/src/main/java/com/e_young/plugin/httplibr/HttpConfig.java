@@ -67,7 +67,7 @@ public class HttpConfig {
         try {
             config = KalleConfig.newBuilder()
                     .addInterceptor(new LoggerInterceptor(loggerTag, Debug))
-                    .addInterceptor(new RedirectInterceptor(tokenLister))
+                    .addInterceptor(new RedirectInterceptor())
                     .connectionTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(15, TimeUnit.SECONDS)
                     .network(new BroadcastNetwork(context))
