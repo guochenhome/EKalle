@@ -31,7 +31,7 @@ public class HttpConfig {
     }
 
     public HttpConfig(Context context, Builder builder) {
-        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID,builder.lister));
+        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister, builder.Token));
     }
 
     /**
@@ -55,8 +55,10 @@ public class HttpConfig {
      * params.put("deviceId", JPushInterface.getUdid(context));
      * }
      */
-    private KalleConfig getKallConfig(Context context, String loggerTag, boolean Debug, String deviceid
-            , JsonConverter.OnJsonConverterLister lister) {
+    private KalleConfig getKallConfig(Context context, String loggerTag
+            , boolean Debug, String deviceid
+            , JsonConverter.OnJsonConverterLister lister
+            , String token) {
 
         KalleConfig config = null;
 
@@ -76,6 +78,7 @@ public class HttpConfig {
                     .addHeader(HeadConsts.PHONEMODEL, SystemUtil.getSystemModel())
                     .addHeader(HeadConsts.OSTYPE, OSUtil.getOsType(context))
                     .addHeader(HeadConsts.DEVICEID, deviceid)
+                    .addParam(HeadConsts.TOKEY, token)
                     .build();
         } catch (Exception error) {
             config = KalleConfig.newBuilder().build();
@@ -107,13 +110,16 @@ public class HttpConfig {
          * @param context
          */
         private String DEVICEID = "";
-
         /**
          * 拦截器 jsonconverter
          *
          * @param context
          */
         private JsonConverter.OnJsonConverterLister lister;
+        /**
+         * token
+         */
+        private String Token;
 
         public Builder(Context context) {
             this.context = context;
@@ -136,6 +142,11 @@ public class HttpConfig {
 
         public Builder setJsonConverter(JsonConverter.OnJsonConverterLister lister) {
             this.lister = lister;
+            return this;
+        }
+
+        public Builder setToken(String token) {
+            this.Token = token;
             return this;
         }
 
