@@ -31,7 +31,11 @@ public class HttpConfig {
     }
 
     public HttpConfig(Context context, Builder builder) {
-        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister, builder.Token));
+        if (builder.Token.isEmpty()) {
+            Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister));
+        } else {
+            Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister, builder.Token));
+        }
     }
 
     /**
@@ -78,7 +82,36 @@ public class HttpConfig {
                     .addHeader(HeadConsts.PHONEMODEL, SystemUtil.getSystemModel())
                     .addHeader(HeadConsts.OSTYPE, OSUtil.getOsType(context))
                     .addHeader(HeadConsts.DEVICEID, deviceid)
-                    .setHeader(HeadConsts.TOKEY,token)
+                    .addHeader(HeadConsts.TOKEY, token)
+                    .build();
+        } catch (Exception error) {
+            config = KalleConfig.newBuilder().build();
+        }
+        return config;
+    }
+
+    private KalleConfig getKallConfig(Context context, String loggerTag
+            , boolean Debug, String deviceid
+            , JsonConverter.OnJsonConverterLister lister) {
+
+        KalleConfig config = null;
+
+        try {
+            config = KalleConfig.newBuilder()
+                    .addInterceptor(new LoggerInterceptor(loggerTag, Debug))
+                    .connectionTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(15, TimeUnit.SECONDS)
+                    .network(new BroadcastNetwork(context))
+                    .connectFactory(OkHttpConnectFactory.newBuilder().build())
+                    .converter(new JsonConverter(context, lister))
+                    .addHeader(HeadConsts.APPVER, OSUtil.getAppVersionName(context))
+                    .addHeader(HeadConsts.CONTENT_TYPE, HeadConsts.CONTENT_TYPE_VEL)
+                    .addHeader(HeadConsts.OS, HeadConsts.OS_VEL)
+                    .addHeader(HeadConsts.OSLANG, HeadConsts.OS_LANG_VEL)
+                    .addHeader(HeadConsts.OSVERSION, SystemUtil.getSystemVersion())
+                    .addHeader(HeadConsts.PHONEMODEL, SystemUtil.getSystemModel())
+                    .addHeader(HeadConsts.OSTYPE, OSUtil.getOsType(context))
+                    .addHeader(HeadConsts.DEVICEID, deviceid)
                     .build();
         } catch (Exception error) {
             config = KalleConfig.newBuilder().build();
