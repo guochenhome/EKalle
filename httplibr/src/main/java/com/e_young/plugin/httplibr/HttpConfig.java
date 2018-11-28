@@ -78,7 +78,7 @@ public class HttpConfig {
                     .addHeader(HeadConsts.PHONEMODEL, SystemUtil.getSystemModel())
                     .addHeader(HeadConsts.OSTYPE, OSUtil.getOsType(context))
                     .addHeader(HeadConsts.DEVICEID, deviceid)
-                    .addHeader(HeadConsts.TOKEY,token)
+                    .setHeader(HeadConsts.TOKEY,token)
                     .build();
         } catch (Exception error) {
             config = KalleConfig.newBuilder().build();
