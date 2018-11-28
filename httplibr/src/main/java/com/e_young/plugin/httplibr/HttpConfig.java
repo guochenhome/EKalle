@@ -32,7 +32,7 @@ public class HttpConfig {
     }
 
     public HttpConfig(Context context, Builder builder) {
-        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister, builder.Token,builder.tokenLister));
+        Kalle.setConfig(getKallConfig(context, builder.loggerTag, builder.Debug, builder.DEVICEID, builder.lister, builder.tokenLister));
     }
 
     /**
@@ -59,15 +59,14 @@ public class HttpConfig {
     private KalleConfig getKallConfig(Context context, String loggerTag
             , boolean Debug, String deviceid
             , JsonConverter.OnJsonConverterLister lister
-            , String token
-    , RedirectInterceptor.OnRedirectInterceLister tokenLister) {
+            , RedirectInterceptor.OnRedirectInterceLister tokenLister) {
 
         KalleConfig config = null;
 
         try {
             config = KalleConfig.newBuilder()
                     .addInterceptor(new LoggerInterceptor(loggerTag, Debug))
-                    .addInterceptor(new RedirectInterceptor())
+                    .addInterceptor(new RedirectInterceptor(tokenLister))
                     .connectionTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(15, TimeUnit.SECONDS)
                     .network(new BroadcastNetwork(context))
@@ -81,7 +80,6 @@ public class HttpConfig {
                     .addHeader(HeadConsts.PHONEMODEL, SystemUtil.getSystemModel())
                     .addHeader(HeadConsts.OSTYPE, OSUtil.getOsType(context))
                     .addHeader(HeadConsts.DEVICEID, deviceid)
-                    .addHeader(HeadConsts.TOKEY,token)
                     .build();
         } catch (Exception error) {
             config = KalleConfig.newBuilder().build();
@@ -124,10 +122,7 @@ public class HttpConfig {
          * 拦截器 token
          */
         private RedirectInterceptor.OnRedirectInterceLister tokenLister;
-        /**
-         * token
-         */
-        private String Token;
+
 
         public Builder(Context context) {
             this.context = context;
@@ -153,13 +148,8 @@ public class HttpConfig {
             return this;
         }
 
-        public Builder setToken(String token) {
-            this.Token = token;
-            return this;
-        }
-
-        public Builder setTokenLister(RedirectInterceptor.OnRedirectInterceLister tokenLister){
-            this.tokenLister=tokenLister;
+        public Builder setTokenLister(RedirectInterceptor.OnRedirectInterceLister tokenLister) {
+            this.tokenLister = tokenLister;
             return this;
         }
 
