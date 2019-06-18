@@ -81,7 +81,7 @@ public class JsonConverter implements Converter {
     public interface OnJsonConverterLister {
 
         void outLogin();
-
+        //拦截签到
         void notSingin();
     }
 
