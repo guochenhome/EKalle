@@ -6,7 +6,11 @@ import com.e_young.plugin.httplibr.http.JsonConverter
 import com.e_young.plugin.httplibr.http.RedirectInterceptor
 import com.e_young.plugin.httplibr.util.OSUtil
 
-class App : Application() , JsonConverter.OnJsonConverterLister{
+class App : Application(), JsonConverter.OnJsonConverterLister {
+    override fun notSingin() {
+
+    }
+
     override fun outLogin() {
 
     }
