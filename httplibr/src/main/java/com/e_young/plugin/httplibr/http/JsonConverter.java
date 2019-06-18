@@ -47,11 +47,13 @@ public class JsonConverter implements Converter {
                 //判断授权,如果授权失败直接忽略以下的操作
                 if (status != null && "-999".equals(status)) {
                     lister.outLogin();
+                } else if (status != null && "-900".equals(status)) {
+                    lister.notSingin();
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
                     } catch (Exception e) {
-                        Log.e("erre",e.toString());
+                        Log.e("erre", e.toString());
                         failedData = (F) "服务器数据格式错误";
                     }
                 } else {
@@ -79,6 +81,8 @@ public class JsonConverter implements Converter {
     public interface OnJsonConverterLister {
 
         void outLogin();
+
+        void notSingin();
     }
 
 
