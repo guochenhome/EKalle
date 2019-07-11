@@ -7,12 +7,20 @@ import com.e_young.plugin.httplibr.http.RedirectInterceptor
 import com.e_young.plugin.httplibr.util.OSUtil
 
 class App : Application(), JsonConverter.OnJsonConverterLister {
-    override fun notSingin() {
+    override fun authentication() {
+        //认证
+    }
 
+    override fun authenticationFail() {
+        //认证失败，从新认证
+    }
+
+    override fun notSingin() {
+        // 没有实名认证
     }
 
     override fun outLogin() {
-
+        // 未登录，登录失败
     }
 
     override fun onCreate() {

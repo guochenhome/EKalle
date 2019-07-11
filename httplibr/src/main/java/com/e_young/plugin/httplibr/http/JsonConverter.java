@@ -45,10 +45,31 @@ public class JsonConverter implements Converter {
                 String message = jsonObject.get("message").getAsString();
 
                 //判断授权,如果授权失败直接忽略以下的操作
+                /*
+                NO_AUTHENTICATION("-998", "未实名认证,请进行实名认证"),
+
+                NO_AUTHENTICATIONFAIL("-997", "实名认证未通过,请重新认证"),
+
+                NO_SIGNING("-900", "该用户有未完成的签约，需要进行签约"),
+
+                NO_LOGIN("-999", "未登录"),
+
+                SUCCESS("1", "操作成功"),
+
+                ERROR("0", "操作失败"),
+
+                ERROR_SYSTEM("0", "服务器忙,请稍后重试~"),
+
+                ERROR_PARAM_DEFICIENCY("0", "操作失败，参数缺失");
+                 */
                 if (status != null && "-999".equals(status)) {
                     lister.outLogin();
                 } else if (status != null && "-900".equals(status)) {
                     lister.notSingin();
+                } else if (status != null && "-998".equals(status)) {
+                    lister.authentication();
+                } else if (status != null && "-997".equals(status)) {
+                    lister.authenticationFail();
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
@@ -80,9 +101,17 @@ public class JsonConverter implements Converter {
 
     public interface OnJsonConverterLister {
 
+        //登录过期
         void outLogin();
-        //拦截签到
+
+        //拦截签约 该用户有未完成的签约，需要进行签约
         void notSingin();
+
+        //未实名认证,请进行实名认证
+        void authentication();
+
+        //实名认证未通过,请重新认证
+        void authenticationFail();
     }
 
 
