@@ -70,6 +70,8 @@ public class JsonConverter implements Converter {
                     lister.authentication();
                 } else if (status != null && "-997".equals(status)) {
                     lister.authenticationFail();
+                } else if (status != null && "-995".equals(status)) {
+                    lister.projectIn();
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
@@ -112,6 +114,9 @@ public class JsonConverter implements Converter {
 
         //实名认证未通过,请重新认证
         void authenticationFail();
+
+        //用户没有入驻的项目,请入驻后登录~
+        void projectIn();
     }
 
 
