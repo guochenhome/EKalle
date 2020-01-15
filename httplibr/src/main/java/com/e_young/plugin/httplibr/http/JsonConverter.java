@@ -54,6 +54,8 @@ public class JsonConverter implements Converter {
 
                 NO_LOGIN("-999", "未登录"),
 
+                ("-800","个体认证信息未完善")
+
                 SUCCESS("1", "操作成功"),
 
                 ERROR("0", "操作失败"),
@@ -72,6 +74,8 @@ public class JsonConverter implements Converter {
                     lister.authenticationFail();
                 } else if (status != null && "-995".equals(status)) {
                     lister.projectNoIn();
+                } else if (status != null && "-800".equals(status)) {
+                    lister.individualInfo();
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
@@ -117,6 +121,9 @@ public class JsonConverter implements Converter {
 
         //"用户没有入驻的项目,请入驻后登录~
         void projectNoIn();
+
+        //个体信息未完善
+        void individualInfo();
     }
 
 
