@@ -76,6 +76,8 @@ public class JsonConverter implements Converter {
                     lister.projectNoIn();
                 } else if (status != null && "-800".equals(status)) {
                     lister.individualInfo();
+                } else if (status != null && "-889".equals(status)) {
+                    lister.individualDtl();
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
@@ -124,6 +126,9 @@ public class JsonConverter implements Converter {
 
         //个体信息未完善
         void individualInfo();
+
+        //跳转个体完善页面
+        void individualDtl();
     }
 
 

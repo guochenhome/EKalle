@@ -7,6 +7,10 @@ import com.e_young.plugin.httplibr.http.RedirectInterceptor
 import com.e_young.plugin.httplibr.util.OSUtil
 
 class App : Application(), JsonConverter.OnJsonConverterLister {
+    override fun individualDtl() {
+        //跳转个体完善页面
+    }
+
     override fun individualInfo() {
         //个体信息未完善
     }
