@@ -43,7 +43,6 @@ public class JsonConverter implements Converter {
                 JsonObject jsonObject = new JsonParser().parse(serverJson).getAsJsonObject();
                 String status = jsonObject.get("status").getAsString();
                 String message = jsonObject.get("message").getAsString();
-                String data=jsonObject.get("data").getAsString();
 
                 //判断授权,如果授权失败直接忽略以下的操作
                 /*
@@ -80,7 +79,7 @@ public class JsonConverter implements Converter {
                 } else if (status != null && "-889".equals(status)) {
                     lister.individualDtl();
                 }else if(status != null && "-994".equals(status)){
-                    lister.riskcontrol(message,data);
+                    lister.riskcontrol(message,jsonObject.get("data").getAsString());
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
