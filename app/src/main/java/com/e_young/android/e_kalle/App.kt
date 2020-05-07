@@ -11,6 +11,10 @@ class App : Application(), JsonConverter.OnJsonConverterLister {
         //跳转个体完善页面
     }
 
+    override fun riskcontrol(message: String?, data: String?) {
+        //风控提示
+    }
+
     override fun individualInfo() {
         //个体信息未完善
     }
