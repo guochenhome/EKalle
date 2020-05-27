@@ -67,7 +67,9 @@ public class JsonConverter implements Converter {
                 if (status != null && "-999".equals(status)) {
                     lister.outLogin();
                 } else if (status != null && "-900".equals(status)) {
-                    lister.notSingin();
+                    lister.notSingin(false);
+                } else if (status != null && "-901".equals(status)) {
+                    lister.notSingin(true);
                 } else if (status != null && "-998".equals(status)) {
                     lister.authentication();
                 } else if (status != null && "-997".equals(status)) {
@@ -78,8 +80,8 @@ public class JsonConverter implements Converter {
                     lister.individualInfo();
                 } else if (status != null && "-889".equals(status)) {
                     lister.individualDtl();
-                }else if(status != null && "-994".equals(status)){
-                    lister.riskcontrol(message,jsonObject.get("data").getAsString());
+                } else if (status != null && "-994".equals(status)) {
+                    lister.riskcontrol(message, jsonObject.get("data").getAsString());
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
@@ -115,7 +117,8 @@ public class JsonConverter implements Converter {
         void outLogin();
 
         //拦截签约 该用户有未完成的签约，需要进行签约
-        void notSingin();
+        // retroactive 是否是补签   true 补签  false 非补签
+        void notSingin(boolean retroactive);
 
         //未实名认证,请进行实名认证
         void authentication();
@@ -131,8 +134,9 @@ public class JsonConverter implements Converter {
 
         //跳转个体完善页面
         void individualDtl();
+
         //风控
-        void riskcontrol(String message,String data);
+        void riskcontrol(String message, String data);
     }
 
 
