@@ -68,7 +68,7 @@ public class HttpConfig {
                     .addInterceptor(new LoggerInterceptor(loggerTag, Debug))
                     .addInterceptor(new RedirectInterceptor(tokenLister))
                     .connectionTimeout(30, TimeUnit.SECONDS)
-                    .readTimeout(15, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
                     .network(new BroadcastNetwork(context))
                     .connectFactory(OkHttpConnectFactory.newBuilder().build())
                     .converter(new JsonConverter(context, lister))
