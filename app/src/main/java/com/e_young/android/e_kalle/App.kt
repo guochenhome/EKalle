@@ -31,6 +31,10 @@ class App : Application(), JsonConverter.OnJsonConverterLister {
         //认证失败，从新认证
     }
 
+    override fun openWallet() {
+        //开通钱包
+    }
+
     override fun notSingin(retroactive: Boolean) {
         // 没有实名认证
     }

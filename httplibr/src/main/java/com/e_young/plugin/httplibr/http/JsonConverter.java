@@ -82,6 +82,8 @@ public class JsonConverter implements Converter {
                     lister.individualDtl();
                 } else if (status != null && "-994".equals(status)) {
                     lister.riskcontrol(message, jsonObject.get("data").getAsString());
+                } else if (status != null && "-885".equals(status)) {
+                    lister.openWallet();
                 } else if (status != null && "1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
@@ -137,6 +139,9 @@ public class JsonConverter implements Converter {
 
         //风控
         void riskcontrol(String message, String data);
+
+        //开通钱包
+        void openWallet();
     }
 
 
