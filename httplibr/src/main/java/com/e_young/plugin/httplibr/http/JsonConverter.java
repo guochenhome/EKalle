@@ -64,43 +64,58 @@ public class JsonConverter implements Converter {
 
                 ERROR_PARAM_DEFICIENCY("0", "操作失败，参数缺失");
                  */
-                if (status != null && "-999".equals(status)) {
-                    lister.outLogin();
-                } else if (status != null && "-900".equals(status)) {
-                    lister.notSingin(false);
-                } else if (status != null && "-901".equals(status)) {
-                    lister.notSingin(true);
-                } else if (status != null && "-998".equals(status)) {
-                    lister.authentication();
-                } else if (status != null && "-997".equals(status)) {
-                    lister.authenticationFail();
-                } else if (status != null && "-995".equals(status)) {
-                    lister.projectNoIn();
-                } else if (status != null && "-800".equals(status)) {
-                    lister.individualInfo();
-                } else if (status != null && "-889".equals(status)) {
-                    lister.individualDtl();
-                } else if (status != null && "-994".equals(status)) {
-                    lister.riskcontrol(message, jsonObject.get("data").getAsString());
-                } else if (status != null && "-885".equals(status)) {
-                    lister.openWallet();
-                } else if (status != null && "1".equals(status)) {
+
+//                if (status != null && "-999".equals(status)) {
+//                    lister.outLogin();
+//                } else if (status != null && "-900".equals(status)) {
+//                    lister.notSingin(false);
+//                } else if (status != null && "-901".equals(status)) {
+//                    lister.notSingin(true);
+//                } else if (status != null && "-998".equals(status)) {
+//                    lister.authentication();
+//                } else if (status != null && "-997".equals(status)) {
+//                    lister.authenticationFail();
+//                } else if (status != null && "-995".equals(status)) {
+//                    lister.projectNoIn();
+//                } else if (status != null && "-800".equals(status)) {
+//                    lister.individualInfo();
+//                } else if (status != null && "-889".equals(status)) {
+//                    lister.individualDtl();
+//                } else if (status != null && "-994".equals(status)) {
+//                    lister.riskcontrol(message, jsonObject.get("data").getAsString());
+//                } else if (status != null && "-885".equals(status)) {
+//                    lister.openWallet();
+//                } else
+                if (status == null || status.isEmpty()) {
+                    lister.abNormal("0", "服务器数据错误", "服务器数据错误");
+                } else if ("1".equals(status)) {
                     try {
                         succeedData = new Gson().fromJson(serverJson, succeed);
+                        lister.normal();
                     } catch (Exception e) {
-                        Log.e("erre", e.toString());
+                        lister.abNormal("-1", "服务器数据格式错误", "服务器数据格式错误");
                         failedData = (F) "服务器数据格式错误";
                     }
                 } else {
+                    String data = "";
+                    try {
+                        data = jsonObject.get("data").getAsString();
+                    } catch (Exception e) {
+                        data = "DATA-发成错误";
+                    }
+                    lister.abNormal(status, message, data);
                     failedData = (F) message;
                 }
 
             } catch (Exception e) {
+                lister.abNormal("-2", "Gson服务错误", "Gson服务错误");
                 failedData = (F) "Gson服务错误";
             }
         } else if (code >= 400 && code < 500) {
+            lister.abNormal("-3", "发生未知错误", "发生未知错误");
             failedData = (F) "发生未知错误";
         } else if (code >= 500) {
+            lister.abNormal("-4", "服务器发生未知错误", "服务器发生未知错误");
             failedData = (F) "服务器发生未知错误";
         }
         return SimpleResponse.<S, F>newBuilder()
@@ -115,33 +130,40 @@ public class JsonConverter implements Converter {
 
     public interface OnJsonConverterLister {
 
-        //登录过期
-        void outLogin();
+//        //登录过期
+//        void outLogin();
+//
+//        //拦截签约 该用户有未完成的签约，需要进行签约
+//        // retroactive 是否是补签   true 补签  false 非补签
+//        void notSingin(boolean retroactive);
+//
+//        //未实名认证,请进行实名认证
+//        void authentication();
+//
+//        //实名认证未通过,请重新认证
+//        void authenticationFail();
+//
+//        //"用户没有入驻的项目,请入驻后登录~
+//        void projectNoIn();
+//
+//        //个体信息未完善
+//        void individualInfo();
+//
+//        //跳转个体完善页面
+//        void individualDtl();
+//
+//        //风控
+//        void riskcontrol(String message, String data);
+//
+//        //开通钱包
+//        void openWallet();
 
-        //拦截签约 该用户有未完成的签约，需要进行签约
-        // retroactive 是否是补签   true 补签  false 非补签
-        void notSingin(boolean retroactive);
+        //非正确返回  abnormal
+        void abNormal(String status, String message, String data);
 
-        //未实名认证,请进行实名认证
-        void authentication();
+        //正常返回
+        void normal();
 
-        //实名认证未通过,请重新认证
-        void authenticationFail();
-
-        //"用户没有入驻的项目,请入驻后登录~
-        void projectNoIn();
-
-        //个体信息未完善
-        void individualInfo();
-
-        //跳转个体完善页面
-        void individualDtl();
-
-        //风控
-        void riskcontrol(String message, String data);
-
-        //开通钱包
-        void openWallet();
     }
 
 

@@ -11,6 +11,7 @@ import com.yanzhenjie.kalle.Kalle
 import com.yanzhenjie.kalle.simple.SimpleCallback
 import com.yanzhenjie.kalle.simple.SimpleResponse
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.reflect.Type
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,6 +50,16 @@ class MainActivity : AppCompatActivity() {
                        Log.d("tag","${response.succeed().data.size}+")
                     }
                 })
+        Kalle.get("").perform(object :SimpleCallback<String>(){
+            override fun onResponse(response: SimpleResponse<String, String>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun getSucceed(): Type {
+                return super.getSucceed()
+            }
+
+        })
 
 
 //        Kalle.post(LOGIN)

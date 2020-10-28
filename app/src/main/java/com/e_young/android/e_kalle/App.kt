@@ -7,41 +7,49 @@ import com.e_young.plugin.httplibr.http.RedirectInterceptor
 import com.e_young.plugin.httplibr.util.OSUtil
 
 class App : Application(), JsonConverter.OnJsonConverterLister {
-    override fun individualDtl() {
-        //跳转个体完善页面
+//    override fun individualDtl() {
+//        //跳转个体完善页面
+//    }
+//
+//    override fun riskcontrol(message: String?, data: String?) {
+//        //风控提示
+//    }
+//
+//    override fun individualInfo() {
+//        //个体信息未完善
+//    }
+//
+//    override fun projectNoIn() {
+//        //"data": "用户没有入驻的项目,请入驻后登录~
+//    }
+
+    override fun abNormal(status: String?, message: String?, data: String?) {
+        //  非正常返回
     }
 
-    override fun riskcontrol(message: String?, data: String?) {
-        //风控提示
+//    override fun authentication() {
+//        //认证
+//    }
+//
+//    override fun authenticationFail() {
+//        //认证失败，从新认证
+//    }
+//
+//    override fun openWallet() {
+//        //开通钱包
+//    }
+
+    override fun normal() {
+        //正常返回
     }
 
-    override fun individualInfo() {
-        //个体信息未完善
-    }
-
-    override fun projectNoIn() {
-        //"data": "用户没有入驻的项目,请入驻后登录~
-    }
-
-    override fun authentication() {
-        //认证
-    }
-
-    override fun authenticationFail() {
-        //认证失败，从新认证
-    }
-
-    override fun openWallet() {
-        //开通钱包
-    }
-
-    override fun notSingin(retroactive: Boolean) {
-        // 没有实名认证
-    }
-
-    override fun outLogin() {
-        // 未登录，登录失败
-    }
+//    override fun notSingin(retroactive: Boolean) {
+//        // 没有实名认证
+//    }
+//
+//    override fun outLogin() {
+//        // 未登录，登录失败
+//    }
 
     override fun onCreate() {
         super.onCreate()
