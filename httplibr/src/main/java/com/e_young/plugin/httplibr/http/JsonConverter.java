@@ -44,48 +44,9 @@ public class JsonConverter implements Converter {
                 String status = jsonObject.get("status").getAsString();
                 String message = jsonObject.get("message").getAsString();
 
-                //判断授权,如果授权失败直接忽略以下的操作
                 /*
-                NO_AUTHENTICATION("-998", "未实名认证,请进行实名认证"),
-
-                NO_AUTHENTICATIONFAIL("-997", "实名认证未通过,请重新认证"),
-
-                NO_SIGNING("-900", "该用户有未完成的签约，需要进行签约"),
-
-                NO_LOGIN("-999", "未登录"),
-
-                ("-800","个体认证信息未完善")
-
-                SUCCESS("1", "操作成功"),
-
-                ERROR("0", "操作失败"),
-
-                ERROR_SYSTEM("0", "服务器忙,请稍后重试~"),
-
-                ERROR_PARAM_DEFICIENCY("0", "操作失败，参数缺失");
+                 * 主逻辑处理
                  */
-
-//                if (status != null && "-999".equals(status)) {
-//                    lister.outLogin();
-//                } else if (status != null && "-900".equals(status)) {
-//                    lister.notSingin(false);
-//                } else if (status != null && "-901".equals(status)) {
-//                    lister.notSingin(true);
-//                } else if (status != null && "-998".equals(status)) {
-//                    lister.authentication();
-//                } else if (status != null && "-997".equals(status)) {
-//                    lister.authenticationFail();
-//                } else if (status != null && "-995".equals(status)) {
-//                    lister.projectNoIn();
-//                } else if (status != null && "-800".equals(status)) {
-//                    lister.individualInfo();
-//                } else if (status != null && "-889".equals(status)) {
-//                    lister.individualDtl();
-//                } else if (status != null && "-994".equals(status)) {
-//                    lister.riskcontrol(message, jsonObject.get("data").getAsString());
-//                } else if (status != null && "-885".equals(status)) {
-//                    lister.openWallet();
-//                } else
                 if (status == null || status.isEmpty()) {
                     lister.abNormal("0", "服务器数据错误", "服务器数据错误");
                 } else if ("1".equals(status)) {
@@ -108,8 +69,17 @@ public class JsonConverter implements Converter {
                 }
 
             } catch (Exception e) {
-                lister.abNormal("-2", "Gson服务错误", "Gson服务错误");
-                failedData = (F) "Gson服务错误";
+                /*
+                 *  辅助逻辑 处理未被规定格式的 先用于拉取域名的方法
+                 * 但是可以应对任何的 json 格式的json数据
+                 */
+                try {
+                    succeedData = new Gson().fromJson(serverJson, succeed);
+                    lister.normal();
+                }catch (Exception ce){
+                    lister.abNormal("-2", "Gson服务错误", "Gson服务错误");
+                    failedData = (F) "Gson服务错误";
+                }
             }
         } else if (code >= 400 && code < 500) {
             lister.abNormal("-3", "发生未知错误", "发生未知错误");
