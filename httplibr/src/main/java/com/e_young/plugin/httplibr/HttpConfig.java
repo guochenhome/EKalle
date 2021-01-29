@@ -12,6 +12,7 @@ import com.yanzhenjie.kalle.KalleConfig;
 import com.yanzhenjie.kalle.OkHttpConnectFactory;
 import com.yanzhenjie.kalle.connect.BroadcastNetwork;
 import com.yanzhenjie.kalle.connect.http.LoggerInterceptor;
+import com.yanzhenjie.kalle.cookie.DBCookieStore;
 
 import java.util.concurrent.TimeUnit;
 
@@ -80,6 +81,7 @@ public class HttpConfig {
                     .addHeader(HeadConsts.PHONEMODEL, SystemUtil.getSystemModel())
                     .addHeader(HeadConsts.OSTYPE, OSUtil.getOsType(context))
                     .addHeader(HeadConsts.DEVICEID, deviceid)
+                    .cookieStore(DBCookieStore.newBuilder(context).build())
                     .build();
         } catch (Exception error) {
             config = KalleConfig.newBuilder().build();
